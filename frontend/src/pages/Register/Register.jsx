@@ -1,6 +1,41 @@
 import "./Register.css";
 
 function Register() {
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const form = e.target;
+  const data = {
+    name: form.fullName.value,
+    email: form.email.value,
+    password: form.password.value,
+  };
+
+  try {
+    const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/register`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }
+  );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.detail || "Registration failed");
+      return;
+    }
+
+    alert("Registration successful!");
+    form.reset();
+  } catch {
+    alert("Cannot connect to the server. Is the backend running?");
+  }
+};
+
+
   return (
     <div className="register-page">
       <header className="register-navbar">
@@ -75,10 +110,11 @@ function Register() {
             Start your journey with QueryPilot AI
           </p>
 
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={handleSubmit}>
             <label htmlFor="fullName">Full Name</label>
             <input
-              id="fullName"
+              id="fullName" 
+              name="fullName"
               type="text"
               placeholder="Enter your full name"
               autoComplete="name"
@@ -88,6 +124,7 @@ function Register() {
             <label htmlFor="email">Email Address</label>
             <input
               id="email"
+              name="email"
               type="email"
               placeholder="you@example.com"
               autoComplete="email"
@@ -97,6 +134,7 @@ function Register() {
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="Create a password"
               autoComplete="new-password"
@@ -131,5 +169,6 @@ function Register() {
     </div>
   );
 }
+
 
 export default Register;

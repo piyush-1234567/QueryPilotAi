@@ -4,208 +4,297 @@
 .register-page {
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  color: #11182d;
-  background: radial-gradient(ellipse at 15% 45%, #f0efff 0%, transparent 48%), #fff;
+  color: #10172b;
+  background:
+    radial-gradient(ellipse at 15% 45%, #f0efff 0%, transparent 48%),
+    #fff;
 }
 
-.register-page * { box-sizing: border-box; }
-.register-page button { cursor: pointer; transition: .2s ease; }
+.register-page * {
+  box-sizing: border-box;
+}
+
+.register-page button {
+  font: inherit;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
 .register-page button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 7px 18px #5146ff25;
+  box-shadow: 0 6px 18px #5146ff25;
 }
-.register-page a { text-decoration: none; }
 
+.register-page button:active {
+  transform: translateY(1px) scale(.98);
+}
+
+.register-page button:focus-visible {
+  outline: 3px solid #aaa3ff;
+  outline-offset: 3px;
+}
+
+.register-page a {
+  text-decoration: none;
+}
+
+/* Navbar — matches Landing page */
 .register-navbar {
-  height: 84px;
-  padding: 0 4.5%;
+  height: 60px;
+  padding: 0 6.8%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 25px;
-  border-bottom: 1px solid #e5e8f1;
-  background: #ffffffed;
+  gap: 20px;
+  border-bottom: 1px solid #e8eaf2;
+  background: rgba(255, 255, 255, .94);
 }
 
-.register-logo, .card-logo {
-  color: #11182d;
-  font-size: 25px;
+.register-logo,
+.card-logo {
+  color: #10172b;
+  font-size: 23px;
   font-weight: 800;
+  letter-spacing: -.8px;
   white-space: nowrap;
 }
-.register-logo span, .card-logo span { color: #5545ff; }
+
+.register-logo span,
+.card-logo span {
+  color: #4c45ed;
+}
 
 .register-navbar nav {
   display: flex;
+  align-items: center;
   gap: 30px;
 }
-.register-navbar nav a { color: #33415f; font-size: 15px; }
-.register-navbar nav a:hover { color: #5146ff; }
 
-.register-nav-actions { display: flex; gap: 15px; }
-.register-nav-actions button {
-  padding: 13px 22px;
-  border-radius: 12px;
-  background: white;
-  border: 1px solid #dce2ef;
-  font-size: 15px;
-}
-.register-nav-actions .register-primary {
-  background: linear-gradient(120deg, #5146ff, #6250ed);
-  color: white;
-  border-color: transparent;
+.register-navbar nav a {
+  color: #33405b;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
-.register-content {
-  max-width: 1600px;
-  margin: auto;
-  padding: 28px 6.5%;
-  display: grid;
-  grid-template-columns: 1fr 1.05fr;
+.register-navbar nav a:hover {
+  color: #5146ff;
+}
+
+.register-nav-actions {
+  display: flex;
   align-items: center;
-  gap: 7%;
+  gap: 15px;
+  flex-shrink: 0;
 }
 
-.register-intro { padding: 15px 0; }
+.register-nav-actions button {
+  padding: 10px 20px;
+  border-radius: 9px;
+  font-size: 13px;
+  background: white;
+  border: 1px solid #dce1ed;
+  color: #111a30;
+}
+
+.register-nav-actions .register-primary {
+  color: white;
+  border-color: #5146ff;
+  background: linear-gradient(120deg, #5146ff, #6250ed);
+}
+
+/* Main layout */
+.register-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 6.8%;
+  display: grid;
+  grid-template-columns: .95fr 1fr;
+  align-items: center;
+  gap: 5%;
+}
+
+.register-intro {
+  min-width: 0;
+  padding: 12px 0;
+}
+
 .register-badge {
   display: inline-block;
-  padding: 10px 16px;
-  border: 1px solid #dedbff;
+  padding: 7px 13px;
+  border: 1px solid #e4e2ff;
+  background: #fff;
   border-radius: 30px;
-  color: #4c40f6;
-  background: #ffffffc9;
-  font-size: 15px;
+  color: #4039dc;
+  font-size: 13px;
 }
 
 .register-intro h1 {
-  margin: 27px 0 18px;
-  font-size: clamp(42px, 4vw, 64px);
+  margin: 24px 0 14px;
+  font-size: clamp(36px, 3.3vw, 48px);
   line-height: 1.08;
-  letter-spacing: -2.5px;
+  letter-spacing: -1.8px;
   font-weight: 800;
 }
+
 .register-intro h1 span {
-  background: linear-gradient(90deg, #5145ff, #7850f5);
-  color: transparent;
+  background: linear-gradient(90deg, #5545ff, #7450f4);
+  -webkit-background-clip: text;
   background-clip: text;
+  color: transparent;
 }
 
 .register-intro > p {
-  max-width: 510px;
-  font-size: 22px;
+  max-width: 460px;
+  margin: 16px 0 22px;
+  font-size: 16px;
   line-height: 1.55;
-  color: #586887;
+  color: #50607b;
 }
+
 .register-intro ul {
   list-style: none;
   padding: 0;
-  margin: 25px 0;
+  margin: 20px 0;
   display: grid;
-  gap: 15px;
+  gap: 10px;
   color: #50607d;
-  font-size: 17px;
+  font-size: 14px;
 }
-.register-intro li::first-letter { color: #0bb981; }
 
+.register-intro li::first-letter {
+  color: #00b87a;
+}
+
+/* Illustration */
 .register-illustration {
   position: relative;
-  margin-top: 40px;
-  width: min(100%, 530px);
-  min-height: 230px;
-  padding: 25px;
+  margin-top: 25px;
+  width: min(100%, 450px);
+  min-height: 185px;
+  padding: 20px;
   border: 1px solid #e6e8f7;
-  border-radius: 22px;
-  background: #ffffffb8;
-  box-shadow: 0 25px 60px #7a76e71a;
-  transform: rotate(-3deg);
+  border-radius: 18px;
+  background: #ffffffd9;
+  box-shadow: 0 20px 45px #7a76e71a;
+  transform: rotate(-2deg);
 }
+
 .illustration-question {
-  padding: 16px;
+  padding: 12px;
   border: 1px solid #e7e8fa;
-  border-radius: 35px;
+  border-radius: 30px;
   background: white;
   color: #263454;
+  font-size: 12px;
 }
+
 .illustration-chart {
   display: flex;
   align-items: end;
-  gap: 15px;
-  height: 105px;
-  max-width: 230px;
-  margin-top: 25px;
-  padding: 10px;
+  gap: 12px;
+  height: 85px;
+  max-width: 200px;
+  margin-top: 18px;
+  padding: 8px;
   border: 1px solid #eceefa;
-  border-radius: 12px;
+  border-radius: 10px;
 }
+
 .illustration-chart div {
   flex: 1;
   background: linear-gradient(#9585ff, #5846ff);
   border-radius: 4px 4px 0 0;
 }
+
 .illustration-sql {
   position: absolute;
-  right: -35px;
-  bottom: 20px;
-  width: 210px;
-  padding: 20px;
+  right: -18px;
+  bottom: 15px;
+  width: 170px;
+  padding: 15px;
   background: white;
   border: 1px solid #e5e8f4;
-  border-radius: 15px;
-  box-shadow: 0 15px 35px #5d60a51a;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px #5d60a51a;
   color: #62708d;
+  font-size: 12px;
 }
+
 .illustration-sql div {
-  height: 8px;
-  margin-top: 12px;
+  height: 7px;
+  margin-top: 10px;
   border-radius: 8px;
   background: #e9ebf5;
 }
-.illustration-sql div:nth-last-child(2) { width: 70%; }
-.illustration-sql div:last-child { width: 85%; }
 
-.register-card {
-  padding: 28px 7%;
-  border: 1px solid #dfe4f0;
-  border-radius: 25px;
-  background: #ffffffed;
-  box-shadow: 0 25px 70px #5a61a510;
+.illustration-sql div:nth-last-child(2) {
+  width: 70%;
 }
-.card-logo { text-align: center; margin-bottom: 27px; }
+
+.illustration-sql div:last-child {
+  width: 85%;
+}
+
+/* Registration card */
+.register-card {
+  min-width: 0;
+  padding: 24px 6%;
+  border: 1px solid #dfe4f0;
+  border-radius: 18px;
+  background: #ffffffed;
+  box-shadow: 0 20px 55px #5a61a510;
+}
+
+.card-logo {
+  text-align: center;
+  margin-bottom: 18px;
+}
 
 .register-card h2 {
   text-align: center;
-  font-size:20px;
-  letter-spacing: -.8px;
-  margin: 0 0 10px;
+  font-size: 22px;
+  letter-spacing: -.5px;
+  margin: 0 0 8px;
 }
+
 .register-subtitle {
   text-align: center;
   color: #687793;
-  font-size: 16px;
-  margin: 0 0 28px;
+  font-size: 13px;
+  margin: 0 0 20px;
 }
 
-.register-card form { display: flex; flex-direction: column; }
-.register-card label {
-  font-size: 15px;
-  color: #405170;
-  margin: 0 0 9px;
+.register-card form {
+  display: flex;
+  flex-direction: column;
 }
+
+.register-card label {
+  font-size: 13px;
+  color: #405170;
+  margin: 0 0 7px;
+}
+
 .register-card input {
   width: 100%;
-  height: 48px;
+  height: 42px;
   border: 1px solid #d7dfed;
-  border-radius: 12px;
-  padding: 0 17px;
-  margin-bottom: 20px;
+  border-radius: 9px;
+  padding: 0 14px;
+  margin-bottom: 14px;
   outline: none;
   font: inherit;
-  font-size: 15px;
+  font-size: 13px;
   color: #17213a;
   background: white;
   transition: border-color .2s, box-shadow .2s;
 }
-.register-card input::placeholder { color: #8b9ab5; }
+
+.register-card input::placeholder {
+  color: #8b9ab5;
+}
+
 .register-card input:focus {
   border-color: #6757ff;
   box-shadow: 0 0 0 3px #6250ff18;
@@ -213,83 +302,205 @@
 
 .password-hints {
   display: grid;
-  gap: 7px;
-  margin: -7px 0 25px;
+  gap: 6px;
+  margin: -3px 0 18px;
   color: #687793;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .create-account-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   width: 100%;
-  min-height: 48px;
+  min-height: 42px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 9px;
   color: white;
   background: linear-gradient(110deg, #5143ff, #5540f6);
-  font-size: 17px;
-  box-shadow: 0 8px 18px #5146ff20;
+  font-size: 13px !important;
+  box-shadow: 0 5px 12px #5146ff1a;
 }
-.create-account-btn span { position: absolute; margin-left: 65%; }
+
+.create-account-btn span {
+  position: static;
+  margin-left: 0;
+}
 
 .register-divider {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin: 26px 0;
+  gap: 12px;
+  margin: 20px 0;
   color: #8390aa;
+  font-size: 12px;
 }
-.register-divider::before, .register-divider::after {
+
+.register-divider::before,
+.register-divider::after {
   content: "";
   height: 1px;
   background: #dfe4ef;
   flex: 1;
 }
 
-.register-social { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.register-social {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 .register-social button {
-  min-height: 52px;
+  min-height: 42px;
+  padding: 8px;
   border: 1px solid #d7dfed;
-  border-radius: 12px;
+  border-radius: 9px;
   background: white;
-  font-size: 13px;
+  font-size: 12px;
   color: #182139;
 }
-.register-social button:disabled { cursor: not-allowed; opacity: .8; }
+
+.register-social button:disabled {
+  cursor: not-allowed;
+  opacity: .8;
+}
 
 .register-footer {
   text-align: center;
   color: #667692;
-  margin: 28px 0 0;
-  font-size: 15px;
-}
-.register-footer a { color: #4f43ff; font-weight: 700; }
-.register-footer a:hover { text-decoration: underline; }
-
-@media (max-width: 1000px) {
-  .register-navbar { padding: 0 3%; }
-  .register-navbar nav { gap: 13px; }
-  .register-content { padding: 35px 4%; gap: 4%; }
-  .register-intro h1 { font-size: 44px; }
-  .register-intro > p { font-size: 18px; }
-  .register-card { padding: 30px 5%; }
+  margin: 20px 0 0;
+  font-size: 13px;
 }
 
+.register-footer a {
+  color: #4f43ff;
+  font-weight: 700;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+  .register-navbar {
+    padding: 0 4%;
+    gap: 12px;
+  }
+
+  .register-navbar nav {
+    gap: 15px;
+  }
+
+  .register-content {
+    padding-left: 4%;
+    padding-right: 4%;
+    gap: 3%;
+  }
+
+  .register-intro h1 {
+    font-size: 40px;
+  }
+
+  .register-intro > p {
+    font-size: 15px;
+  }
+
+  .register-card {
+    padding: 22px 5%;
+  }
+}
+
+/* Mobile */
 @media (max-width: 760px) {
-  .register-navbar { height: auto; padding: 18px 5%; flex-wrap: wrap; }
-  .register-logo { font-size: 21px; }
-  .register-navbar nav { order: 3; width: 100%; overflow-x: auto; padding: 5px 0; }
-  .register-navbar nav a { white-space: nowrap; font-size: 13px; }
-  .register-nav-actions { gap: 7px; }
-  .register-nav-actions button { padding: 10px 12px; font-size: 13px; }
-  .register-content { grid-template-columns: 1fr; padding: 30px 5%; gap: 25px; }
-  .register-intro h1 { font-size: 43px; }
-  .register-intro > p { font-size: 17px; }
-  .register-illustration { margin: 25px 0 20px; }
-  .register-card { padding: 30px 6%; border-radius: 20px; }
-  .register-card h2 { font-size: 27px; }
-  .register-social { grid-template-columns: 1fr; }
+  .register-navbar {
+    height: auto;
+    min-height: 60px;
+    padding: 12px 5%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .register-logo {
+    font-size: 20px;
+  }
+
+  .register-navbar nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding: 4px 0;
+    gap: 18px;
+  }
+
+  .register-navbar nav a {
+    font-size: 13px;
+  }
+
+  .register-nav-actions {
+    margin-left: auto;
+    gap: 8px;
+  }
+
+  .register-nav-actions button {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .register-content {
+    grid-template-columns: 1fr;
+    padding: 25px 5%;
+    gap: 22px;
+  }
+
+  .register-intro h1 {
+    font-size: clamp(34px, 8vw, 43px);
+    letter-spacing: -1.4px;
+  }
+
+  .register-intro > p {
+    font-size: 15px;
+  }
+
+  .register-illustration {
+    margin: 22px 0;
+    width: calc(100% - 12px);
+  }
+
+  .illustration-sql {
+    right: -10px;
+    width: 145px;
+  }
+
+  .register-card {
+    padding: 24px 6%;
+    border-radius: 16px;
+  }
+
+  .register-card h2 {
+    font-size: 22px;
+  }
+
+  .register-social {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .register-logo {
+    font-size: 18px;
+  }
+
+  .register-nav-actions button {
+    padding: 8px 9px;
+  }
+
+  .register-intro h1 {
+    font-size: 32px;
+  }
+
+  .register-card {
+    padding: 20px 5%;
+  }
 }
