@@ -1,6 +1,6 @@
 
 import "./Landing.css";
-
+import { useNavigate } from "react-router-dom";
 const features = [
   { icon: "▤", title: "Natural Language to SQL", text: "Ask questions in plain English" },
   { icon: "▥", title: "Works with Your Database", text: "Connect your cloud database in minutes" },
@@ -16,7 +16,9 @@ const steps = [
   ["Explore & Optimize", "View results, charts, and optimization suggestions.", "▥"],
 ];
 
+
 function ProductPreview() {
+
   return (
     <div className="product-preview">
       <aside className="preview-sidebar">
@@ -78,6 +80,7 @@ function ProductPreview() {
 }
 
 function Landing() {
+    const navigate = useNavigate();
   return (
     <div className="landing-page">
       <header className="navbar">
@@ -91,7 +94,10 @@ function Landing() {
         </nav>
         <div className="nav-actions">
           <button className="sign-in">Sign In</button>
-          <button className="primary-btn">Get Started</button>
+          <button className="primary-btn"
+          onClick={()=> navigate("/register")}>
+            Get Started
+          </button>
         </div>
       </header>
 

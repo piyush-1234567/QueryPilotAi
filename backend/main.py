@@ -11,7 +11,7 @@ app = FastAPI(title = "QueryPilot AI")
 
 class QueryRequest(BaseModel):
     question: str
-    schema: str
+    db_schema: str
 
 Base.metadata.create_all(bind=engine)
 
@@ -27,7 +27,7 @@ def db_test():
         return {"database": result.scalar(), "status":"connected"}
 @app.post("/generate-sql")
 def generate_query(request: QueryRequest):
-    sql = generate_sql(request.question, request.schema)
+    sql = generate_sql(request.question, request.db_schema)
 
     if not validate_sql(sql):
         raise HTTPException(status_code=400, detail="Unsafe or invalid SQL")
@@ -36,7 +36,7 @@ def generate_query(request: QueryRequest):
 
 @app.post("/execute-sql")
 def execute_sql_endpoint(request: QueryRequest):
-    sql = generate_sql(request.question, request.schema)
+    sql = generate_sql(request.question, request.db_schema)
 
     if not validate_sql(sql):
         raise HTTPException(status_code=400, detail="Invalid SQL")
