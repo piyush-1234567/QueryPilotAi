@@ -93,7 +93,10 @@ function Landing() {
           <a href="#docs">Docs</a>
         </nav>
         <div className="nav-actions">
-          <button className="sign-in">Sign In</button>
+          <button className="sign-in"
+              onClick={() => navigate("/login")}
+            >Sign In
+          </button>
           <button className="primary-btn"
           onClick={()=> navigate("/register")}>
             Get Started

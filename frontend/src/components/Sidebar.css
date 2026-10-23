@@ -1,0 +1,48 @@
+.app-sidebar {
+  padding-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.app-sidebar-item {
+  width: 100%;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #465878;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.app-sidebar-item span {
+  font-size: 17px;
+}
+
+.app-sidebar-item:hover {
+  background: #f0efff;
+}
+
+.app-sidebar-item.selected {
+  color: #5146ff;
+  background: #eeedff;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .app-sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .app-sidebar-item {
+    width: auto;
+    white-space: nowrap;
+  }
+}
