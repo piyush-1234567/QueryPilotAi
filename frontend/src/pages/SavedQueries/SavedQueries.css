@@ -107,14 +107,21 @@
   margin-left: 30px;
   margin-top: 23px;
 }
-@media (max-width: 760px) {
+@media (max-width: 700px) {
+  .saved-layout {
+    flex-direction: column;
+    padding: 16px 4%;
+  }
+
   .saved-layout .app-sidebar {
-    flex-basis: 70px;
-    width: 70px;
+    width: 100%;
+    flex: none;
+    margin: 0;
   }
 
   .saved-main {
-    padding: 20px 14px;
+    width: 100%;
+    padding: 0;
   }
 
   .saved-main h1 {
