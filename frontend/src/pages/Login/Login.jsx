@@ -37,6 +37,8 @@ function Login() {
       }
 
       sessionStorage.setItem("access_token", result.access_token);
+      sessionStorage.setItem("display_name", result.name);
+      sessionStorage.setItem("email", result.email);
       navigate("/dashboard");
     } catch {
       setError("Cannot connect to the server.");

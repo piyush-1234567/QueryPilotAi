@@ -9,8 +9,10 @@ function Navbar() {
 
       <div className="app-navbar-actions">
         <a href="#docs">ⓘ Docs</a>
-        <span className="app-navbar-avatar">PJ</span>
-        <span>User</span>
+        <span className="app-navbar-avatar">
+          {(sessionStorage.getItem("display_name") || "User").slice(0, 2).toUpperCase()}
+        </span>
+        <span>{sessionStorage.getItem("display_name") || "User"}</span>
       </div>
     </header>
   );

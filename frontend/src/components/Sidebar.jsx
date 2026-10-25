@@ -5,8 +5,8 @@ const menuItems = [
   { icon: "▣", label: "Ask", path: "/dashboard" },
   { icon: "◷", label: "History", path: "/history" },
   { icon: "▤", label: "Connected DB", path: "/connect-database" },
-  { icon: "♧", label: "Saved Queries", path: null },
-  { icon: "⚙", label: "Settings", path: null },
+  { icon: "♧", label: "Saved Queries", path: "/saved-queries" },
+  { icon: "⚙", label: "Settings", path: "/settings" },
 ];
 
 function Sidebar() {

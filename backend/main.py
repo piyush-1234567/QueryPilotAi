@@ -2,23 +2,23 @@
 from fastapi import FastAPI, HTTPException
 
 from sqlalchemy.orm import Session
-
+from auth import create_access_token, verify_password, decode_access_token  
 from pydantic import BaseModel, EmailStr
 from fastapi.middleware.cors import CORSMiddleware
 from pwdlib import PasswordHash
 
 from database import engine
-from models import Base, User
+from models import Base, User, QueryHistory , SavedQuery
 from services.sql_generator import generate_sql
 from utils.sql_validator import validate_sql
-from auth import create_access_token, verify_password
+
 
 
 from sqlalchemy import text, create_engine, inspect
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from schemas import DatabaseConnectionRequest
-
+from fastapi import Header
 
 
 cloud_engine = None
@@ -122,26 +122,237 @@ def login(request: LoginRequest):
         return {
             "access_token": token,
             "token_type": "bearer",
+            "name": user.name,
+            "email": user.email
         }
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
 
+
+@app.post("/change-password")
+def change_password(
+    request: ChangePasswordRequest,
+    authorization: str = Header(...)
+):
+    payload = decode_access_token(authorization.replace("Bearer ", ""))
+
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    if len(request.new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.email == payload["sub"]
+        ).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        if not verify_password(request.current_password, user.hashed_password):
+            raise HTTPException(status_code=400, detail="Current password is incorrect")
+
+        user.hashed_password = password_hash.hash(request.new_password)
+        session.commit()
+
+    return {"message": "Password changed successfully"}
+
+class UpdateProfileRequest(BaseModel):
+    name: str
+
+
+@app.put("/update-profile")
+def update_profile(
+    request: UpdateProfileRequest,
+    authorization: str = Header(...)
+):
+    payload = decode_access_token(authorization.replace("Bearer ", ""))
+
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    if not request.name.strip():
+        raise HTTPException(status_code=400, detail="Name cannot be empty")
+
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.email == payload["sub"]
+        ).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        user.name = request.name.strip()
+        session.commit()
+
+    return {"message": "Profile updated successfully"}
+@app.delete("/delete-account")
+def delete_account(authorization: str = Header(...)):
+    payload = decode_access_token(authorization.replace("Bearer ", ""))
+
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.email == payload["sub"]
+        ).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        session.query(QueryHistory).filter(
+            QueryHistory.user_id == user.id
+        ).delete(synchronize_session=False)
+
+        session.query(SavedQuery).filter(
+            SavedQuery.user_id == user.id
+        ).delete(synchronize_session=False)
+
+        session.delete(user)
+        session.commit()
+
+    return {"message": "Account deleted successfully"}
 @app.post("/execute-sql")
-def execute_sql_endpoint(request: QueryRequest):
-    sql = generate_sql(request.question, request.db_schema)
+def execute_sql_endpoint(
+    request: QueryRequest,
+    authorization: str = Header(...)
+):
+    token = authorization.replace("Bearer ", "")
+    payload = decode_access_token(token)
 
-    if not validate_sql(sql):
-        raise HTTPException(status_code=400, detail="Invalid SQL")
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
-    if cloud_engine is None:
-        raise HTTPException(status_code=400, detail="Connect a database first.")
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.email == payload["sub"]
+        ).first()
 
-    with cloud_engine.connect() as connection:
-        result = connection.execute(text(sql))
-        rows = [dict(row._mapping) for row in result]   
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        sql = generate_sql(request.question, request.db_schema)
+
+        if not validate_sql(sql):
+            raise HTTPException(status_code=400, detail="Invalid SQL")
+
+        if cloud_engine is None:
+            raise HTTPException(status_code=400, detail="Connect a database first.")
+
+        try:
+            with cloud_engine.connect() as connection:
+                result = connection.execute(text(sql))
+                rows = [dict(row._mapping) for row in result]
+
+            status = "Success"
+
+        except SQLAlchemyError:
+            rows = []
+            status = "Failed"
+
+            session.add(QueryHistory(
+                user_id=user.id,
+                question=request.question,
+                sql_query=sql,
+                status=status
+            ))
+            session.commit()
+
+            raise HTTPException(status_code=400, detail="SQL execution failed")
+
+        session.add(QueryHistory(
+            user_id=user.id,
+            question=request.question,
+            sql_query=sql,
+            status=status
+        ))
+        session.commit()
 
     return {"sql": sql, "results": rows}
+@app.get("/query-history")
+def get_query_history(authorization: str = Header(...)):
+    token = authorization.replace("Bearer ", "")
+    payload = decode_access_token(token)
 
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.email == payload["sub"]
+        ).first()
+
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        history = session.query(QueryHistory).filter(
+            QueryHistory.user_id == user.id
+        ).order_by(QueryHistory.created_at.desc()).all()
+
+        return [
+            {
+                "question": item.question,
+                "sql_query": item.sql_query,
+                "status": item.status,
+                "created_at": item.created_at
+            }
+            for item in history
+        ]
+@app.post("/save-query")
+def save_query(request: QueryRequest, authorization: str = Header(...)):
+    sql = generate_sql(request.question, request.db_schema)
+    if not validate_sql(sql):
+        raise HTTPException(status_code=400, detail="Invalid SQL")
+    payload = decode_access_token(authorization.replace("Bearer ", ""))
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    with Session(engine) as session:
+        user = session.query(User).filter(User.email == payload["sub"]).first()
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        saved = SavedQuery(
+            user_id=user.id,
+            question=request.question,
+            sql_query=sql
+        )
+        session.add(saved)
+        session.commit()
+
+    return {"message": "Query saved successfully"}
+@app.get("/saved-queries")
+def get_saved_queries(authorization: str = Header(...)):
+    payload = decode_access_token(authorization.replace("Bearer ", ""))
+
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    with Session(engine) as session:
+        user = session.query(User).filter(
+            User.email == payload["sub"]
+        ).first()
+
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        queries = session.query(SavedQuery).filter(
+            SavedQuery.user_id == user.id
+        ).order_by(SavedQuery.created_at.desc()).all()
+
+        return [
+            {
+                "id": q.id,
+                "question": q.question,
+                "sql_query": q.sql_query,
+                "created_at": q.created_at
+            }
+            for q in queries
+        ]
 @app.post("/connect-database")
 def connect_database(request: DatabaseConnectionRequest):
     global cloud_engine
@@ -183,7 +394,9 @@ def connect_database(request: DatabaseConnectionRequest):
 
     except SQLAlchemyError as e:
         print("Database connection error:", repr(e))
-        cloud_engine.dispose()
+        if cloud_engine is not None:
+            cloud_engine.dispose()
+            cloud_engine = None
 
         raise HTTPException(
             status_code=400,
@@ -199,3 +412,4 @@ def disconnect_database():
         cloud_engine = None
 
     return {"message": "Database disconnected"}
+

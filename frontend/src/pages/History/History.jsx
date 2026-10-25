@@ -1,21 +1,28 @@
-
-import { useState } from "react";
 import "./History.css";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
+import { useState, useEffect } from "react";
 
-const historyData = [
-  { question: "Show total sales by month", sql: "SELECT DATE_TRUNC('month', order_date), SUM(total_amount) FROM orders GROUP BY 1;", status: "Success", date: "Oct 23, 2026 10:15 AM" },
-  { question: "List all customers from Delhi", sql: "SELECT * FROM customers WHERE city = 'Delhi';", status: "Success", date: "Oct 23, 2026 09:42 AM" },
-  { question: "Show orders from last 7 days", sql: "SELECT * FROM orders WHERE order_date >= CURRENT_DATE - INTERVAL '7 days';", status: "Failed", date: "Oct 22, 2026 06:30 PM" },
-  { question: "Count number of users", sql: "SELECT COUNT(*) FROM users;", status: "Success", date: "Oct 22, 2026 04:12 PM" },
-];
 
 function History() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [selected, setSelected] = useState(null);
+  const [historyData, setHistoryData] = useState([]);
 
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/query-history`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load history");
+        return res.json();
+      })
+      .then(setHistoryData)
+      .catch(console.error);
+  }, []);
   const filtered = historyData.filter((item) =>
     item.question.toLowerCase().includes(search.toLowerCase()) &&
     (status === "All" || item.status === status)
@@ -58,9 +65,9 @@ function History() {
                     <tr key={item.question}>
                       <td>{index + 1}</td>
                       <td>{item.question}</td>
-                      <td><code>{item.sql}</code></td>
+                      <td><code>{item.sql_query}</code></td>
                       <td><span className={`history-status ${item.status.toLowerCase()}`}>{item.status}</span></td>
-                      <td>{item.date}</td>
+                      <td>{new Date(item.created_at).toLocaleString()}</td>
                       <td>
                         <button onClick={() => setSelected(item)}>View</button>
                         <button onClick={() => {
@@ -85,7 +92,7 @@ function History() {
               <h4>Your Question</h4>
               <p>{selected.question}</p>
               <h4>Generated SQL</h4>
-              <pre>{selected.sql}</pre>
+              <pre>{selected.sql_query}</pre>
               <span className={`history-status ${selected.status.toLowerCase()}`}>{selected.status}</span>
             </section>
           )}

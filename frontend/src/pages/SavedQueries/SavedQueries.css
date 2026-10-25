@@ -1,0 +1,127 @@
+.saved-page {
+  min-height: 100vh;
+  background: #fff;
+  font-family: 'Inter', sans-serif;
+  color: #10172b;
+}
+
+.saved-layout {
+  display: flex;
+  align-items: stretch;
+  min-height: calc(100vh - 60px);
+}
+
+.saved-layout .app-sidebar {
+  flex: 0 0 240px;
+  width: 240px;
+  align-self: stretch;
+}
+
+.saved-main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+  background: #f8f9fc;
+}
+
+.saved-main h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.saved-main > p {
+  margin: 0 0 26px;
+  color: #50607b;
+  font-size: 14px;
+}
+
+.saved-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.saved-card {
+  min-width: 0;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e0e5f0;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px #5a62a50d;
+}
+
+.saved-card h3 {
+  margin: 0 0 16px;
+  color: #10172b;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.saved-card pre {
+  padding: 16px;
+  background: #f8f9fc;
+  border: 1px solid #e9edf5;
+  border-radius: 9px;
+  color: #33405b;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow-x: auto;
+}
+
+.saved-card small {
+  display: block;
+  margin: 14px 0;
+  color: #64718b;
+  font-size: 12px;
+}
+
+.saved-card button {
+  padding: 10px 17px;
+  background: linear-gradient(120deg, #5146ff, #6250ed);
+  border: 1px solid #5146ff;
+  border-radius: 9px;
+  color: #fff;
+  font-size: 13px;
+}
+
+.saved-card button:hover {
+  filter: brightness(1.07);
+}
+
+.saved-error {
+  color: #dc2626 !important;
+}
+
+.saved-empty {
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e0e5f0;
+  border-radius: 12px;
+}
+
+.saved-layout .app-sidebar {
+  margin-left: 30px;
+  margin-top: 23px;
+}
+@media (max-width: 760px) {
+  .saved-layout .app-sidebar {
+    flex-basis: 70px;
+    width: 70px;
+  }
+
+  .saved-main {
+    padding: 20px 14px;
+  }
+
+  .saved-main h1 {
+    font-size: 23px;
+  }
+
+  .saved-grid {
+    grid-template-columns: 1fr;
+  }
+}

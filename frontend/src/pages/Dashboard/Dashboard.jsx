@@ -84,7 +84,10 @@ function Dashboard() {
             `${import.meta.env.VITE_API_URL}/execute-sql`,
             {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("access_token")}`
+                } ,
                 body: JSON.stringify({ question, db_schema: dbSchema }),
             }
             );
@@ -110,7 +113,29 @@ function Dashboard() {
       setError("Could not copy SQL. Please copy it manually.");
     }
   }
+  async function saveQuery() {
+    if (!question.trim() || !dbSchema.trim()) {
+      setError("Enter a question and connect a database first.");
+      return;
+}
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/save-query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify({ question, db_schema: dbSchema }),
+    });
 
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || "Failed to save query");
+
+    alert(data.message);
+  } catch (err) {
+    setError(err.message);
+  }
+}
   return (
     <div className="dashboard">
       <Navbar />
@@ -184,6 +209,9 @@ function Dashboard() {
               <div className="dash-editor-actions">
                 <button onClick={runQuery} disabled={loading}>
                   ▷ Run Query
+                </button>
+                <button onClick={saveQuery} disabled={loading || !question.trim() || !dbSchema}>
+                  ☆ Save Query
                 </button>
                 <button onClick={copySQL}>▢ Copy</button>
               </div>
