@@ -192,27 +192,35 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 700px) {
   .settings-layout {
-    gap: 14px;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 4%;
+  }
+
+  .settings-layout > .app-sidebar {
+    width: 100%;
+    flex: none;
+  }
+
+  .settings-main {
+    width: 100%;
+    padding: 0;
+  }
+
+  .settings-card,
+  .danger-card {
+    grid-template-columns: minmax(0, 1fr);
     padding: 16px;
-  }
-
-  .settings-main h1 {
-    font-size: 24px;
-  }
-
-  .settings-card {
-    padding: 17px;
-    gap: 20px;
+    gap: 18px;
   }
 
   .settings-form {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .settings-page .settings-form button {
-    grid-column: auto;
     justify-self: start;
   }
 
