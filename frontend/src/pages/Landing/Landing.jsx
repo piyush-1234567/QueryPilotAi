@@ -115,7 +115,12 @@ function Landing() {
               no SQL expertise required.
             </p>
             <div className="hero-actions">
-              <button className="primary-btn large-btn">Get Started Free <span>→</span></button>
+              <button
+                  className="primary-btn large-btn"
+                  onClick={() => navigate("/register")}
+                >
+                  Get Started Free <span>→</span>
+                </button>
               <button className="demo-btn"><span>▷</span> Watch Demo</button>
             </div>
             <div className="trust-points">
