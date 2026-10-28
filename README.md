@@ -1,70 +1,128 @@
-# QueryPilot AI
+# 🚀 QueryPilotAI — AI-Powered Text-to-SQL Assistant
 
-An LLM-powered Text-to-SQL RAG chatbot that enables users to query cloud databases using natural language.
+**QueryPilotAI** is an AI-powered web application that converts natural-language questions into SQL queries, helping users interact with databases without needing advanced SQL knowledge.
 
-## Problem Statement
-Accessing structured database information often requires SQL knowledge, creating barriers for non-technical users.
+🔗 **Live Demo:** https://query-pilot-ai-iota.vercel.app  
+⚙️ **Backend API:** https://querypilotai-backend.onrender.com
 
-## Objectives
-- Convert natural-language questions into SQL queries.
-- Use RAG to retrieve relevant database schemas and SQL examples.
-- Validate and execute queries securely.
-- Implement self-healing SQL and query optimization.
-- Display results through interactive tables and charts.
+## ✨ Features
 
-## Tech Stack
-- Frontend: React + Tailwind CSS
-- Backend: Python + FastAPI
-- LLM: Groq API
-- RAG: LangChain
-- Embeddings: Sentence Transformers
-- Vector Database: ChromaDB
-- Database: PostgreSQL
-- SQL Validation: SQLGlot
+- 🤖 **Natural Language to SQL** — Convert plain-English questions into SQL queries.
+- 🔗 **Database Connectivity** — Connect supported PostgreSQL databases.
+- 🛡️ **SQL Validation** — Validate generated queries before execution.
+- 🔄 **SQL Error Recovery** — Help recover from SQL errors.
+- ⚡ **Query Optimization** — Support for improving query efficiency.
+- 👤 **User Authentication** — Register, log in, and manage your account.
+- 📜 **Query History** — Review previously generated queries.
+- ⭐ **Saved Queries** — Save and reuse useful SQL queries.
+- ⚙️ **Account Settings** — Manage profile and password settings.
+- 📱 **Responsive UI** — Access the application on desktop and mobile.
 
-## Planned Features
-- Natural-language database querying
-- RAG-based schema retrieval
-- Self-healing SQL
-- Query optimization
-- Confidence-aware responses
-- Data visualization
+## 🏗️ System Architecture
 
-## Development Status
-Planning and initial setup.
+![QueryPilotAI System Architecture](docs/QueryPilotAI.drawio.png)
 
-## Future Scope
-Support additional database systems and local databases through a secure local agent.
+## 🛠️ Tech Stack
 
+**Frontend**
+- React
+- Vite
+- CSS
 
+**Backend**
+- Python
+- FastAPI
+- SQLAlchemy
+- JWT Authentication
 
-## System Workflow
-1. User connects a supported cloud database.
-2. Backend extracts its schema and stores embeddings in ChromaDB.
-3. User submits a natural-language question.
-4. RAG retrieves relevant schema details and SQL examples.
-5. The LLM generates SQL, which is validated before execution.
-6. Self-healing logic corrects eligible SQL errors with bounded retries.
-7. Query optimization analyzes execution plans and suggests improvements.
-8. Results, generated SQL, and optional visualizations appear in the UI.
+**Database**
+- PostgreSQL
+- Neon
 
-## Agentic AI Features
-- Self-healing SQL with bounded retries.
-- Query execution and error analysis through tools.
-- Query-plan analysis and optimization suggestions.
-- Safety guardrails for read-only execution.
+**AI**
+- Groq API
 
-## Website Pages
-1. Landing Page
-2. Login / Signup
-3. Dashboard
-4. Connect Database
-5. AI Chat Workspace
-6. Query History
-7. Query Analysis
-8. Settings
+**Deployment**
+- Vercel — Frontend
+- Render — Backend
 
-## Development Scope
-**Version 1:** Website supporting a demo database and supported cloud PostgreSQL connections.
+## 🚀 Run Locally
 
-**Future Scope:** MySQL support and local database connectivity through a secure local agent.
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/piyush-1234567/QueryPilotAi.git
+cd QueryPilotAi
+```
+
+### 2. Set Up the Backend
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Create a `.env` file inside the `backend/` directory:
+
+```env
+DATABASE_URL=your_postgresql_connection_string
+GROQ_API_KEY=your_groq_api_key
+JWT_SECRET=your_secret_key
+```
+
+Start the backend server:
+
+```bash
+uvicorn main:app --reload
+```
+
+Backend API documentation: `http://127.0.0.1:8000/docs`
+
+### 3. Set Up the Frontend
+
+Open a new terminal:
+
+```bash
+cd frontend
+npm install
+```
+
+Create a `.env` file inside the `frontend/` directory:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Open the local URL provided by Vite in your browser.
+
+## 🔐 Security
+
+- Never commit API keys, database credentials, or JWT secrets to GitHub.
+- Store sensitive configuration in environment variables.
+- Use appropriate database permissions.
+- Review generated SQL before executing queries against important data.
+
+## 🗺️ Future Improvements
+
+- Support for additional database systems.
+- Advanced query optimization.
+- Improved SQL error recovery.
+- Interactive data visualizations.
+- Stronger database isolation and security controls.
+
+## 👨‍💻 Author
+
+**Piyush Jain**  
+B.Tech — Computer Science Engineering (AI/ML)
+
+---
+
+⭐ If you find QueryPilotAI interesting, consider starring the repository!
